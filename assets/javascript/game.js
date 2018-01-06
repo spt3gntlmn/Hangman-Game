@@ -29,23 +29,42 @@ var hangman = {
         this.userGuess = "";
         this.matchedLetters = "";
         this.gameWord = this.theGameWord();
-        // this.gameWordLength = this.calcGameWordLength();
-
+        this.gameWordLength = this.calcGameWordLength();
 
       },
 
     // randomly choose a word function      
     theGameWord: function() {
       var randnbr = Math.floor(Math.random() * this.words.length);
-      var word = this.words[randnbr];
       // console.log(this.gameWord);
-      console.log('Samuel', randnbr, word);
+      console.log('Samuel', randnbr, this.words[randnbr]);
+      return this.words[randnbr];
     },
+
+    // calculate gameWord length
+    calcGameWordLength: function() {
+      return this.gameWordLength.length;
+    },
+
+    // create hangman dashes on initial load
+    gameDashes: function() {
+      var word = "";
+      for (var i = 0; i < this.gameWordLength; i++) {
+        word += '_ ';
+      }
+      // this.matchedLetters = word;
+      console.log(word);
+      // return word;
+    },
+    
+
 }
+
 
 // event listener
 window.onload = function(event) {
   hangman.gameIni();
+  hangman.gameDashes();
   // hangman.theGameWord();
   // console.log('Samuel');
 }
