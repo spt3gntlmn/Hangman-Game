@@ -1,117 +1,51 @@
-var words = ["jesus", "matthew", "barnabus", "galilee", "sabbath"]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var comChoice = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-
-var wins = 0;
-var losses = 0;
-var guesses = 0;
-var guessesLeft = 9;
-var lettersGuessed = [];
-var guessingLetter = null;
-
-var computerGuess = comChoice[Math.floor(Math.random() * comChoice.length)];
-document.write(computerGuess);
-
-var updateGuessesLeft = function() {
-    
-  document.querySelector('#guessesLeft').innerHTML = "Guesses left: " + guessesLeft;
-};
-
-var updateLetterToGuess = function() {
-  this.letterToGuess = this.comChoice[Math.floor(Math.random() * this.comChoice.length)];
-};
-var updateGuessesSoFar = function() {
-  document.querySelector('#guessSoFar').innerHTML = "Guesses so far: " + lettersGuessed.join(', ');
-};
-var reset = function() {
-  totalGuesses = 9;
-  guessesLeft = 9;
-  lettersGuessed = [];
-
-  updateLetterToGuess();
-  updateGuessesLeft();
-  updateGuessesSoFar();
+var winTrack = 0;
+var lossTrack = 0;
+
+var hangman = {
+    words: ['Hosea',
+      'Joel', 'Amos', 'Obadiah',
+      'Jonah', 'Micah', 'Nahum',
+      'Habakkuk', 'Zephaniah', 
+      'Haggai', 'Zechariah', 'Malachi',
+      ],
+    letters: ['A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J', 'K',
+      'L', 'M', 'N', 'O', 'P', 'Q',
+      'R', 'S', 'T', 'U', 'V', 'W',
+      'X', 'Y', 'Z'
+      ],
+    lives: 10,
+    userGuess: "",
+    userGuesses: [],
+    gameWord: "",
+    matchedLetters: "",
+    gameWordLength: 0,
+    countMatchedLetters: 0,
+
+    gameIni: function() {
+        this.lived = 10;
+        this.userGuesses = [];
+        this.countMatchedLetters = 0;
+        this.userGuess = "";
+        this.matchedLetters = "";
+        this.gameWord = this.theGameWord();
+        // this.gameWordLength = this.calcGameWordLength();
+
+
+      },
+
+    // randomly choose a word function      
+    theGameWord: function() {
+      var randnbr = Math.floor(Math.random() * this.words.length);
+      var word = this.words[randnbr];
+      // console.log(this.gameWord);
+      console.log('Samuel', randnbr, word);
+    },
 }
 
-updateLetterToGuess();
-updateGuessesLeft();
-
-
-document.onkeyup = function(event) {
-    guessesLeft--;
-  var userGuess = String.fromCharCode(event.keyCode).toLowerCase();
-
-  lettersGuessed.push(userGuess);
-  updateGuessesLeft();
-  updateGuessesSoFar();
-
-        if (guessesLeft > 0){
-            if (userGuess == computerGuess){
-                wins++;
-                document.querySelector('#wins').innerHTML = "Wins: " + wins;
-                reset();
-            }
-        }else if(guessesLeft == 0){
-            losses++;
-            document.querySelector('#losses').innerHTML = "Losses: " + losses;
-            reset();
-        }
-        }
+// event listener
+window.onload = function(event) {
+  hangman.gameIni();
+  // hangman.theGameWord();
+  // console.log('Samuel');
+}

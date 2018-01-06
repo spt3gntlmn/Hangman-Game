@@ -2,41 +2,38 @@
 <html lang="en">
 
 <head>
-    <title>
-        Hangman The Game!
-    </title>
     <meta charset="UTF-8">
+    <title>Bible Hangman</title>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
+    <script type="text/javascript" src="assets/javascript/game.js"></script>
 </head>
 
 <body>
-    <div class="wrapper">
-            <header>
-                <h1 style="text-align: center">Hangman: Biblical Brain Buster</h1>
-            </header>
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-6 text-center">
-
-            <div class="instructions">
-                <h3 id="keyPress">Press any key to get started!</h3>
-                <h3 id="wins">Wins! </h3>
-                <h2 id="cuerrentWord">Current Word</h2><br>
-                <!-- <h2 id="theWord">_ _ _ _ _ _ _</h2><br> -->
-                <span id="theWord" style="font-size:2.8em;letter-spacing:10px;">-------</span>
-                <h3 id="numRemaining">Number of Guesses Remaining</h3>
-                <h3 id="remaining">7</h3>
-                <h3 id="lettersUsed">Letters Already Used</h3>
-
-
-    
-
+    <header>
+        <h1>Hangman of Biblical Perportions</h1>
+    </header>
+    <div class="container">
+        
     </div>
+    <div class="instructions">
+        <h3>Press A Letter to Start Hangman!</h3>
+        <h3>Category: Biblical Trivia</h3>
+    </div>
+    <div id="win/loss">
+        <div>Wins: 
+            <span id="winstrack"></span>
+        </div>
+        <div>Losses: 
+            <span id="losstrack"></span>
+        </div>
+        <div>Lives: <span id="livesLeft">10</span></div>
+    </div>
+    <div id="gameWord"><b>Word: &nbsp;&nbsp;<span id="word"></span></b></div>
+    <div id="usedLetters">Letters Guessed: &nbsp;<span id="guessedLetters"></span></div>
 
-    <script type="text/javascript" src="assets/javascript/game.js"></script>
 
 </body>
+
 </html>
