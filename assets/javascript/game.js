@@ -31,6 +31,8 @@ var hangman = {
         this.gameWord = this.theGameWord();
         this.gameWordLength = this.calcGameWordLength();
 
+        this.gameDashes();
+        this.replaceDashes();
       },
 
     // randomly choose a word function      
@@ -43,19 +45,42 @@ var hangman = {
 
     // calculate gameWord length
     calcGameWordLength: function() {
-      return this.gameWordLength.length;
+      return this.gameWord.length;
+      console.log(this.gameWordLength)
     },
 
     // create hangman dashes on initial load
     gameDashes: function() {
       var word = "";
+      console.log(this.gameWordLength);
       for (var i = 0; i < this.gameWordLength; i++) {
         word += '_ ';
       }
-      // this.matchedLetters = word;
-      console.log(word);
-      // return word;
+      this.matchedLetters = word;
+      console.log(word, 'Samuel');
+      return word;
     },
+
+    // Replace dashes for to be guessed letters [word]
+    replaceDashes: function() {
+      document.querySelector("#word").innerHTML = this.matchedLetters;
+    },
+
+    //replace dashes with letters
+  //   createWordWithMatchedLetters: function() {
+  //     for (var i = 0; i < this.computerWordLength; i++) {
+  //         if (this.computerWord.charAt(i).toUpperCase() == this.userInput) {
+  //             if (i === 0) {
+  //                 this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i) +
+  //                     this.userInput.toUpperCase() + this.wordWithMatchedLetters.substring((i * 2 + 1));
+  //             } else {
+  //                 this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i) +
+  //                     this.userInput.toLowerCase() + this.wordWithMatchedLetters.substring((i * 2 + 1));
+  //             }
+  //             this.matchedLettersCount++;
+  //         }
+  //     }
+  // },
     
 
 }
@@ -64,7 +89,6 @@ var hangman = {
 // event listener
 window.onload = function(event) {
   hangman.gameIni();
-  hangman.gameDashes();
   // hangman.theGameWord();
   // console.log('Samuel');
 }
