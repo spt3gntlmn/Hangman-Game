@@ -31,8 +31,8 @@ var hangman = {
         this.gameWord = this.theGameWord();
         this.gameWordLength = this.calcGameWordLength();
 
-        this.gameDashes();
-        this.replaceDashes();
+        var initialWord = this.gameDashes();
+        this.printWord(initialWord);
       },
 
     // randomly choose a word function      
@@ -52,13 +52,12 @@ var hangman = {
     // create hangman dashes on initial load
     gameDashes: function() {
       var word = "";
-      console.log(this.gameWordLength);
       for (var i = 0; i < this.gameWordLength; i++) {
         word += '_ ';
       }
       this.matchedLetters = word;
-      console.log(word, 'Samuel');
-      document.querySelector("#word").innerHTML = this.matchedLetters;
+      // console.log(word, 'Samuel');
+      // document.querySelector("#word").innerHTML = this.matchedLetters;
       return word;
     },
 
@@ -79,11 +78,13 @@ var hangman = {
         if  (this.gameWord.charAt(i).toUpperCase() == this.userGuess) {
           if (i === 0) {
               this.matchedLetters = this.matchedLetters.substring(0, i) +
-                  this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
+                this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
           } else {
               this.matchedLetters = this.matchedLetters.substring(0, i) +
-                  this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
+                this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
           }
+          // this.matchedLetters++;
+          console.log("TEST:",this.gameWord.charAt(i),this.userGuess, this.matchedLetters);
         }
       }
     },
@@ -91,7 +92,6 @@ var hangman = {
     // print word
     printWord: function(word) {
       document.querySelector("#word").innerHTML = word;
-      console.log(word);
     },
     
 }
@@ -103,6 +103,7 @@ window.onload = function(event) {
 
   document.onkeyup = function(e) {
     hangman.userGuess = String.fromCharCode(e.keyCode).toUpperCase();
-    console.log(hangman.userGuess);
+    hangman.replaceDashes();
+    // console.log(hangman.userGuess);
   }
 }
