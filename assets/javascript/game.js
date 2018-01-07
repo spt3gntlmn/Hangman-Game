@@ -38,7 +38,7 @@ var hangman = {
     // randomly choose a word function      
     theGameWord: function() {
       var randnbr = Math.floor(Math.random() * this.words.length);
-      // console.log(this.gameWord);
+      // console.log(this.the);
       console.log('Samuel', randnbr, this.words[randnbr]);
       return this.words[randnbr];
     },
@@ -58,37 +58,51 @@ var hangman = {
       }
       this.matchedLetters = word;
       console.log(word, 'Samuel');
+      document.querySelector("#word").innerHTML = this.matchedLetters;
       return word;
+    },
+
+    // Determin if userGuess is in the gameWord
+    checkUserGuess: function() {
+      var contains = false;
+      for (var i = 0; i < this.gameWordLength; i++) {
+        if (gameWord.charAt(i).toUpperCase() = this.userGuess) {
+          contains = true;
+        }
+      }
+      return contains;
     },
 
     // Replace dashes for to be guessed letters [word]
     replaceDashes: function() {
-      document.querySelector("#word").innerHTML = this.matchedLetters;
+      for (var i = 0; i < this.gameWordLength; i++) {
+        if  (this.gameWord.charAt(i).toUpperCase() == this.userGuess) {
+          if (i === 0) {
+              this.matchedLetters = this.matchedLetters.substring(0, i) +
+                  this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
+          } else {
+              this.matchedLetters = this.matchedLetters.substring(0, i) +
+                  this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
+          }
+        }
+      }
     },
-
-    //replace dashes with letters
-  //   createWordWithMatchedLetters: function() {
-  //     for (var i = 0; i < this.computerWordLength; i++) {
-  //         if (this.computerWord.charAt(i).toUpperCase() == this.userInput) {
-  //             if (i === 0) {
-  //                 this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i) +
-  //                     this.userInput.toUpperCase() + this.wordWithMatchedLetters.substring((i * 2 + 1));
-  //             } else {
-  //                 this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i) +
-  //                     this.userInput.toLowerCase() + this.wordWithMatchedLetters.substring((i * 2 + 1));
-  //             }
-  //             this.matchedLettersCount++;
-  //         }
-  //     }
-  // },
     
-
+    // print word
+    printWord: function(word) {
+      document.querySelector("#word").innerHTML = word;
+      console.log(word);
+    },
+    
 }
 
 
 // event listener
 window.onload = function(event) {
   hangman.gameIni();
-  // hangman.theGameWord();
-  // console.log('Samuel');
+
+  document.onkeyup = function(e) {
+    hangman.userGuess = String.fromCharCode(e.keyCode).toUpperCase();
+    console.log(hangman.userGuess);
+  }
 }
