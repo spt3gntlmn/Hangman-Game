@@ -14,13 +14,13 @@ var hangman = {
       'R', 'S', 'T', 'U', 'V', 'W',
       'X', 'Y', 'Z'
       ],
-    lives: 10,
-    userGuess: "",
-    userGuesses: [],
-    gameWord: "",
-    matchedLetters: "",
-    gameWordLength: 0,
-    countMatchedLetters: 0,
+      lives: 10,
+      userGuess: "",
+      userGuesses: [],
+      gameWord: "",
+      matchedLetters: "",
+      gameWordLength: 0,
+      countMatchedLetters: 0,
 
     gameIni: function() {
         this.lived = 10;
@@ -45,8 +45,9 @@ var hangman = {
 
     // calculate gameWord length
     calcGameWordLength: function() {
+      var temp = this.gameWord.length;
+      console.log('game Word Length',temp);
       return this.gameWord.length;
-      console.log(this.gameWordLength)
     },
 
     // create hangman dashes on initial load
@@ -72,26 +73,32 @@ var hangman = {
       return contains;
     },
 
-    // Replace dashes for to be guessed letters [word]
+    // Replace dashes with guessed letters
     replaceDashes: function() {
       for (var i = 0; i < this.gameWordLength; i++) {
-        if  (this.gameWord.charAt(i).toUpperCase() == this.userGuess) {
-          if (i === 0) {
-              this.matchedLetters = this.matchedLetters.substring(0, i) +
-                this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
-          } else {
-              this.matchedLetters = this.matchedLetters.substring(0, i) +
-                this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
+        // console.log('GWL: ',this.gameWordLength, ' UsrGs ',this.userGuess)
+         if  (this.gameWord.charAt(i).toUpperCase() == this.userGuess) {
+            if (i === 0) {
+                this.matchedLetters = this.matchedLetters.substring(0, i * 2) +
+                  this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
+            } else {
+                this.matchedLetters = this.matchedLetters.substring(0, i * 2) +
+                  this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
+            }
+            this.countMatchedLetters++;
           }
-          // this.matchedLetters++;
-          console.log("TEST:",this.gameWord.charAt(i),this.userGuess, this.matchedLetters);
-        }
+          this.printWord(this.matchedLetters);
+          console.log("TEST: position: ",this.gameWord.charAt(i),'Ltr gsd: ',this.userGuess, 'matched ltrs ',this.matchedLetters);
+      }
+      if (this.countMatchedLetters === this.gameWordLength) {
+        console.log("You've Won !!!");
       }
     },
     
     // print word
     printWord: function(word) {
       document.querySelector("#word").innerHTML = word;
+      console.log(word);
     },
     
 }
