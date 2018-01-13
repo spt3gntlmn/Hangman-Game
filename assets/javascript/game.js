@@ -1,116 +1,162 @@
-var winTrack = 0;
-var lossTrack = 0;
+var livesLeft = 10;
+var wins = 0;
+var losses = 0;
 
-var hangman = {
-    words: ['Hosea',
-      'Joel', 'Amos', 'Obadiah',
-      'Jonah', 'Micah', 'Nahum',
-      'Habakkuk', 'Zephaniah', 
-      'Haggai', 'Zechariah', 'Malachi',
-      ],
-    letters: ['A', 'B', 'C', 'D', 'E',
-      'F', 'G', 'H', 'I', 'J', 'K',
-      'L', 'M', 'N', 'O', 'P', 'Q',
-      'R', 'S', 'T', 'U', 'V', 'W',
-      'X', 'Y', 'Z'
-      ],
-      lives: 10,
-      userGuess: "",
-      userGuesses: [],
-      gameWord: "",
-      matchedLetters: "",
-      gameWordLength: 0,
-      countMatchedLetters: 0,
 
+// Creation of the hangman object - the entire game will be housed in this object (save for event listeners)
+var hangMan = {
+    // reset: reset(),
+    gameWord: "",
+    userGuess: "",
+    userGuesses: [],
+    usdltrs: "",
+    guessesLeft: 10,
+    livesLeft: 10,
+    wins: 0,
+    losses: 0,
+    dashPlacement: "",
+    wordWithMatchedLetters: "",
+    matchedLettersCount: 0,
+    gameWords: [
+        'Genesis', 'Deuteronomy', 'Samuel', 'Nehemiah', 'Song of Solomon', 'Lamentations', 
+        'Obadiah', 'Habakkuk', 'Zechariah', 'Leviticus', 'Isaiah', 'Matthew', 'Romans',
+        'Corinthians', 'Galatians', 'Philippians', 'Thessalonians', 'Philemon', 'Hebrews',
+        'Revelation', 'Ephesians', 'Ephesians', 'Timothy', 'Peter', 'Titus', 'John', 'Mark',
+        'James', 'Joshua', 'Daniel', 'Ezekiel', 'Zephaniah', 'Malachi', 'Gideon', 'Samson',
+        'Gabriel', 'Lazarus', 'Transfiguration', 'Baptism', 'Melchizedek', 'Jacob', 'Passover'
+    ],
+    
+    // Letters to be selected by user
+    // letterToChoose: [
+    //     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+    // ],
+
+    // Initialize the game - function calls for initializing the game
     gameIni: function() {
-        this.lived = 10;
-        this.userGuesses = [];
-        this.countMatchedLetters = 0;
+        this.reset();
+        this.gameWord = this.chooseGameWord();  //  Game chooses game word upon initial DOM load
+        this.dashPlacement = this.letterDashes(); // Create dashes for game word upon initial DOM load
+    },
+
+    // Game reset of parameters
+    reset: function() {
         this.userGuess = "";
-        this.matchedLetters = "";
-        this.gameWord = this.theGameWord();
-        this.gameWordLength = this.calcGameWordLength();
-
-        var initialWord = this.gameDashes();
-        this.printWord(initialWord);
-      },
-
-    // randomly choose a word function      
-    theGameWord: function() {
-      var randnbr = Math.floor(Math.random() * this.words.length);
-      // console.log(this.the);
-      console.log('Samuel', randnbr, this.words[randnbr]);
-      return this.words[randnbr];
+        this.userGuesses = [];
+        document.getElementById("guessedLetters").innerHTML = this.userGuesses;
+        this.guessesLeft = 10;
+        document.getElementById("livesLeft").innerHTML = this.guessesLeft;
+        this.livesLeft = 10;
+        this.matchedLettersCount = 0;
     },
-
-    // calculate gameWord length
-    calcGameWordLength: function() {
-      var temp = this.gameWord.length;
-      console.log('game Word Length',temp);
-      return this.gameWord.length;
+    
+    // Choose the word of the game - function to randomly select the game word
+    chooseGameWord: function() {
+        var gmWrdNbr = Math.floor((Math.random() * this.gameWords.length));
+        console.log(this.gameWords[gmWrdNbr]);
+        return this.gameWords[gmWrdNbr];
     },
-
-    // create hangman dashes on initial load
-    gameDashes: function() {
-      var word = "";
-      for (var i = 0; i < this.gameWordLength; i++) {
-        word += '_ ';
-      }
-      this.matchedLetters = word;
-      // console.log(word, 'Samuel');
-      // document.querySelector("#word").innerHTML = this.matchedLetters;
-      return word;
-    },
-
-    // Determin if userGuess is in the gameWord
-    checkUserGuess: function() {
-      var contains = false;
-      for (var i = 0; i < this.gameWordLength; i++) {
-        if (gameWord.charAt(i).toUpperCase() = this.userGuess) {
-          contains = true;
+    
+    // Function to create the games word's letter holders (dashes)
+    letterDashes: function() {
+        var dashes = "";
+        for (var i = 0; i < this.gameWord.length; i++) {
+            dashes += "_ " + " ";
         }
-      }
-      return contains;
+        this.wordWithMatchedLetters = dashes;
+        document.querySelector("#word").innerHTML = dashes;
+        console.log(dashes);
+        return word;    // Why does 'word' work here?
+    },
+    
+    // Start game - can be called anytime the game is over or during initialization
+    startGame: function() {
+        this.compareUserGuess();
+        // console.log(this.userGuesses);       // Log out user letter
+    },
+    
+    // Compare user choice to previously entered choices & push to userGuesses if not privously chosen otherwise alerts to rechoose
+    compareUserGuess: function() {
+        var check = false;
+        if (this.userGuesses.length === 0) {                    // Checks to see if it's the first letter chosen
+            this.userGuesses.push(this.userGuess);              // Input user letter
+            document.getElementById("guessedLetters").innerHTML = this.userGuesses;
+            console.log(this.userGuesses);
+            this.isUserChoiceInGameWord();
+        } else {
+            for (var i = 0; i < this.userGuesses.length; i++) {
+                if (this.userGuess === this.userGuesses[i]) {   // Checks for user choice in previously entered choices
+                    check = true;                               // Returns 'true' if new choise == prior choice
+                }
+            }
+            if (check === true) {
+                alert("You've already entered that letter.  Please try again");
+            } else {
+                this.userGuesses.push(this.userGuess);      // Input user letter
+                document.getElementById("guessedLetters").innerHTML = this.userGuesses;
+                console.log(this.userGuesses);
+                this.isUserChoiceInGameWord();
+            }
+        }
     },
 
-    // Replace dashes with guessed letters
-    replaceDashes: function() {
-      for (var i = 0; i < this.gameWordLength; i++) {
-        // console.log('GWL: ',this.gameWordLength, ' UsrGs ',this.userGuess)
-         if  (this.gameWord.charAt(i).toUpperCase() == this.userGuess) {
-            if (i === 0) {
-                this.matchedLetters = this.matchedLetters.substring(0, i * 2) +
-                  this.userGuess.toUpperCase() + this.matchedLetters.substring((i * 2 + 1));
-            } else {
-                this.matchedLetters = this.matchedLetters.substring(0, i * 2) +
-                  this.userGuess.toLowerCase() + this.matchedLetters.substring((i * 2 + 1));
+    // Compare userChoice to gameWord
+    isUserChoiceInGameWord: function() {
+        for (var i = 0; i < this.gameWord.length; i++) {
+            if (this.userGuess === this.gameWord.charAt(i).toUpperCase()) {
+                this.createWordWithMatchedLetters();    // Creates string w/ letters replacing dashes
+                return this.userGuess;
             }
-            this.countMatchedLetters++;
-          }
-          this.printWord(this.matchedLetters);
-          console.log("TEST: position: ",this.gameWord.charAt(i),'Ltr gsd: ',this.userGuess, 'matched ltrs ',this.matchedLetters);
-      }
-      if (this.countMatchedLetters === this.gameWordLength) {
-        console.log("You've Won !!!");
-      }
+        }
+        this.guessesLeft--;
+        document.getElementById("livesLeft").innerHTML = this.guessesLeft;
+        if (this.guessesLeft === 0) {
+            losses++;
+            document.getElementById("losstrack").innerHTML = losses;
+            console.log("You Didn't Win !!!");
+            document.getElementById("word").innerHTML = "Sorry, You Didn't Win !!! - The Game Will Restart in 3s";
+            setTimeout(function(){ hangMan.gameIni(); }, 3000);
+        }
     },
-    
-    // print word
-    printWord: function(word) {
-      document.querySelector("#word").innerHTML = word;
-      console.log(word);
+
+    // replace dashes with letters
+    createWordWithMatchedLetters: function() {
+        for (var i = 0; i < this.gameWord.length; i++) {
+            if (this.gameWord.charAt(i).toUpperCase() === this.userGuess) {
+                if (i === 0) {
+                    // console.log("Samuel it's working");
+                    this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i * 3) +
+                        this.userGuess.toUpperCase() + this.wordWithMatchedLetters.substring((i * 3 + 1));
+                } else {
+                    this.wordWithMatchedLetters = this.wordWithMatchedLetters.substring(0, i * 3) +
+                        this.userGuess.toLowerCase() + this.wordWithMatchedLetters.substring((i * 3 + 1));
+                }
+                this.matchedLettersCount++;
+                this.printCorrectLetters();
+                console.log(this.wordWithMatchedLetters);
+                if (this.matchedLettersCount === this.gameWord.length) {
+                    this.wins++;
+                    document.getElementById("winstrack").innerHTML = this.wins;
+                    console.log("You've Won !!!");
+                    document.getElementById("word").innerHTML = "You've Won!!! - The Game Will Restart in 3s";
+                    setTimeout(function(){ hangMan.gameIni(); }, 3000);
+                }
+            }
+        }
     },
-    
+
+    // Print replaced dashes with letters
+    printCorrectLetters: function() {
+        document.getElementById("word").innerHTML = this.wordWithMatchedLetters;
+    }
 }
 
 
 // event listener
 window.onload = function(event) {
-  hangman.gameIni();
-
-  document.onkeyup = function(e) {
-    hangman.userGuess = String.fromCharCode(e.keyCode).toUpperCase();
-    hangman.replaceDashes();
-    // console.log(hangman.userGuess);
-  }
-}
+    hangMan.gameIni();
+    
+    document.onkeyup = function(e) {
+        hangMan.userGuess = String.fromCharCode(e.keyCode).toUpperCase();
+        hangMan.startGame();
+        }
+    }
