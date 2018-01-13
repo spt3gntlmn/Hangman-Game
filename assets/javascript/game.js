@@ -1,4 +1,4 @@
-var livesLeft = 10;
+var livesLeft = 11;
 var wins = 0;
 var losses = 0;
 
@@ -10,8 +10,8 @@ var hangMan = {
     userGuess: "",
     userGuesses: [],
     usdltrs: "",
-    guessesLeft: 10,
-    livesLeft: 10,
+    guessesLeft: 11,
+    livesLeft: 11,
     wins: 0,
     losses: 0,
     dashPlacement: "",
@@ -36,6 +36,8 @@ var hangMan = {
         this.reset();
         this.gameWord = this.chooseGameWord();  //  Game chooses game word upon initial DOM load
         this.dashPlacement = this.letterDashes(); // Create dashes for game word upon initial DOM load
+        document.getElementById("picture").innerHTML = "<img id='Bible' src='assets/images/BigrqaKjT0.jpg'>";
+
     },
 
     // Game reset of parameters
@@ -43,9 +45,9 @@ var hangMan = {
         this.userGuess = "";
         this.userGuesses = [];
         document.getElementById("guessedLetters").innerHTML = this.userGuesses;
-        this.guessesLeft = 10;
+        this.guessesLeft = 11;
         document.getElementById("livesLeft").innerHTML = this.guessesLeft;
-        this.livesLeft = 10;
+        this.livesLeft = 11;
         this.matchedLettersCount = 0;
     },
     
@@ -108,7 +110,12 @@ var hangMan = {
             }
         }
         this.guessesLeft--;
+        var photoCount = 11 - this.guessesLeft;
         document.getElementById("livesLeft").innerHTML = this.guessesLeft;
+        console.log(photoCount);
+        // var filename = this.photoArray[photoCount];
+        document.getElementById("picture").innerHTML = "<img id='Bible' src='assets/images/BigrqaKjT" + photoCount + ".jpg'>";
+
         if (this.guessesLeft === 0) {
             losses++;
             document.getElementById("losstrack").innerHTML = losses;
