@@ -1,0 +1,19 @@
+body {
+    background-image: url("../images/gradient_8.png");
+    background-repeat: repeat;
+}
+
+header {
+    margin-top: 12px;
+    text-align: center;
+    height: 300px;
+    color: green;
+    background-image: url("../images/BibleHangman2.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+h1 {
+    color: green;
+    size: 38px;
+}
