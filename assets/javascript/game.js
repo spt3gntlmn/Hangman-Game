@@ -31,13 +31,41 @@ var hangMan = {
     //     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
     // ],
 
+    
+    // Music funcitons
+    playAudiox: function() { 
+        var x = document.getElementById("gameMusic");
+        x.play();
+        document.getElementById("gameMusic").volume = 0.1;
+    },
+
+    playAudioy: function() { 
+        var y = document.getElementById("sadMusic"); 
+        y.play();
+        document.getElementById("sadMusic").volume = 0.4;
+    },
+
+    pauseAudiox: function() {
+        var x = document.getElementById("gameMusic");
+        x.pause(); 
+    },
+
+    playAudioz: function() {
+        var z = document.getElementById("triumph"); 
+        z.play();
+        document.getElementById("triumph").volume = 1.0;
+    },
+    
+    
     // Initialize the game - function calls for initializing the game
     gameIni: function() {
         this.reset();
         this.gameWord = this.chooseGameWord();  //  Game chooses game word upon initial DOM load
         this.dashPlacement = this.letterDashes(); // Create dashes for game word upon initial DOM load
         document.getElementById("picture").innerHTML = "<img id='Bible' src='assets/images/BigrqaKjT0.jpg'>";
-
+        this.matchedLettersCount = 0;
+        var x = document.getElementById("gameMusic");
+        this.playAudiox();
     },
 
     // Game reset of parameters
@@ -48,7 +76,6 @@ var hangMan = {
         this.guessesLeft = 11;
         document.getElementById("livesLeft").innerHTML = this.guessesLeft;
         this.livesLeft = 11;
-        this.matchedLettersCount = 0;
     },
     
     // Choose the word of the game - function to randomly select the game word
@@ -121,6 +148,8 @@ var hangMan = {
             document.getElementById("losstrack").innerHTML = losses;
             console.log("You Didn't Win !!!");
             document.getElementById("word").innerHTML = "Sorry, You Didn't Win !!! - The Game Will Restart in 3s";
+            this.pauseAudiox();
+            this.playAudioy();
             setTimeout(function(){ hangMan.gameIni(); }, 3000);
         }
     },
@@ -145,6 +174,8 @@ var hangMan = {
                     document.getElementById("winstrack").innerHTML = this.wins;
                     console.log("You've Won !!!");
                     document.getElementById("word").innerHTML = "You've Won!!! - The Game Will Restart in 3s";
+                    this.pauseAudiox();
+                    this.playAudioz();
                     setTimeout(function(){ hangMan.gameIni(); }, 3000);
                 }
             }
